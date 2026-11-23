@@ -12,6 +12,7 @@ from selenium.webdriver.edge.options import Options as EdgeOptions
 
 
 def pytest_addoption(parser):
+    """Добавляем кастомные опции командной строки"""
     parser.addoption(
         "--browser",
         action="store",
@@ -22,8 +23,8 @@ def pytest_addoption(parser):
     parser.addoption(
         "--base_url",
         action="store",
-        default="https://demo.prestashop.com",  # <-- ДЕМО-ВЕРСИЯ
-        help="Базовый URL PrestaShop"
+        default="http://localhost",
+        help="Базовый URL PrestaShop (например: http://localhost:8080)"
     )
 
 

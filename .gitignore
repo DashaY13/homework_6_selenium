@@ -1,0 +1,29 @@
+# Виртуальное окружение
+.venv/
+venv/
+ENV/
+
+# Файлы Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Selenium (если есть скриншоты)
+screenshots/
+*.png
+
+# Логи
+*.log
