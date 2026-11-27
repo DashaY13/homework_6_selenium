@@ -26,27 +26,51 @@ def pytest_addoption(parser):
         default="http://localhost",
         help="Базовый URL PrestaShop (например: http://localhost:8080)"
     )
+    parser.addoption(
+        "--admin_email",
+        action="store",
+        default="admin@admin.com",
+        help="Email администратора для логина"
+    )
+    parser.addoption(
+        "--admin_password",
+        action="store",
+        default="admin123",
+        help="Пароль администратора"
+    )
 
 
 @pytest.fixture
 def base_url(request):
-    """Фикстура, возвращающая базовый URL из параметров командной строки"""
+    """Фикстура, возвращающая базовый URL"""
     return request.config.getoption("--base_url")
 
 
 @pytest.fixture
+def admin_email(request):
+    """Фикстура для email администратора"""
+    return request.config.getoption("--admin_email")
+
+
+@pytest.fixture
+def admin_password(request):
+    """Фикстура для пароля администратора"""
+    return request.config.getoption("--admin_password")
+
+
+@pytest.fixture
 def driver(request):
-    """Фикстура для запуска браузера с возможностью выбора"""
+    """Фикстура для запуска браузера"""
     browser_name = request.config.getoption("--browser")
     
     driver = None
     
     if browser_name == "chrome":
         options = ChromeOptions()
-        # Добавляем опции для стабильной работы (опционально)
-        options.add_argument("--start-maximized")  # Открыть на весь экран
-        options.add_argument("--disable-notifications")  # Отключить уведомления
-        options.add_argument("--no-sandbox")  # Для работы в контейнерах
+        options.add_argument("--start-maximized")
+        options.add_argument("--disable-notifications")
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-dev-shm-usage")
         driver = webdriver.Chrome(
             service=ChromeService(ChromeDriverManager().install()),
             options=options
@@ -68,7 +92,7 @@ def driver(request):
     else:
         raise ValueError(f"Браузер '{browser_name}' не поддерживается")
     
-    # Устанавливаем неявное ожидание на случай, если явное не сработает
+    # Устанавливаем неявное ожидание
     driver.implicitly_wait(5)
     
     # Возвращаем driver для использования в тестах
